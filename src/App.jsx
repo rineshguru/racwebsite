@@ -369,11 +369,11 @@ const bulletinData = [
     month: "July 2025",
     title: "The Seal of Change - July 2025",
     editions: [
-      { id: "jul-t", language: "Tamil", cover: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=600" },
-      { id: "jul-e", language: "English", cover: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=600" },
-      { id: "jul-k", language: "Kannada", cover: "https://images.unsplash.com/photo-1523580494112-071d16940d14?auto=format&fit=crop&q=80&w=600" },
-      { id: "jul-m", language: "Malayalam", cover: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=600" },
-      { id: "jul-te", language: "Telugu", cover: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600" }
+      { id: "jul-t", language: "Tamil", cover: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=600", pdfUrl: "" },
+      { id: "jul-e", language: "English", cover: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=600", pdfUrl: "" },
+      { id: "jul-k", language: "Kannada", cover: "https://images.unsplash.com/photo-1523580494112-071d16940d14?auto=format&fit=crop&q=80&w=600", pdfUrl: "" },
+      { id: "jul-m", language: "Malayalam", cover: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=600", pdfUrl: "" },
+      { id: "jul-te", language: "Telugu", cover: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600", pdfUrl: "" }
     ]
   },
   {
@@ -2467,7 +2467,18 @@ const BulletinView = () => {
                   <p className="text-[#ce1d53] text-[10px] font-bold uppercase tracking-widest">{previewBulletin.language} Translation</p>
                 </div>
               </div>
-              <span className="hidden sm:inline-block bg-[#ce1d53]/10 text-[#ce1d53] px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest border border-[#ce1d53]/20">Reading Mode</span>
+              <div className="flex items-center gap-3">
+                <span className="hidden sm:inline-block bg-[#ce1d53]/10 text-[#ce1d53] px-3 py-1.5 rounded text-[10px] font-black uppercase tracking-widest border border-[#ce1d53]/20">Reading Mode</span>
+                <a
+                  href={previewBulletin.pdfUrl || previewBulletin.cover}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download={`${previewBulletin.language}_Bulletin.pdf`}
+                  className="bg-[#012f64] hover:bg-[#02438c] text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+                >
+                  <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Download</span>
+                </a>
+              </div>
             </div>
 
             {/* Document Content Core */}
