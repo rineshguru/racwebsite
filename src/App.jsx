@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
   Menu, X, Droplets, Video, BookOpen, Crown,
   Shield, Swords, MapPin, Phone, Mail, ChevronRight,
@@ -871,15 +871,7 @@ const HomeView = ({ setCurrentPage }) => {
 
   return (
     <div className="animate-[fadeIn_0.5s_ease-in-out] bg-white">
-      <Helmet>
-        <title>Home | Rotaract Club of Info Institute of Engineering</title>
-        <meta name="description" content="Welcome to the official website of the Rotaract Club of Info Institute of Engineering. Join us and make an impact!" />
-        <meta property="og:title" content="Home | Rotaract Club of Info Institute of Engineering" />
-        <meta property="og:description" content="Welcome to the official website of the Rotaract Club of Info Institute of Engineering. Join us and make an impact!" />
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      </Helmet>
+
 
       <section className="relative bg-white text-[#012f64] overflow-hidden h-[calc(100vh-6rem)] min-h-[600px] w-full flex flex-col items-center justify-center border-b border-slate-100">
         <div className="absolute inset-0 z-0 overflow-hidden flex flex-col justify-center gap-6 py-10 opacity-20">
@@ -1121,12 +1113,7 @@ const pastLogosData = [
 
 const AboutView = () => (
   <div className="animate-[fadeIn_0.5s_ease-in-out]">
-    <Helmet>
-      <title>About Us | Rotaract Club of Info Institute of Engineering</title>
-      <meta name="description" content="Learn about our quest to empower young professionals and conquer the challenges facing our communities through service." />
-      <meta property="og:title" content="About Us | Rotaract Club of Info Institute of Engineering" />
-      <meta property="og:description" content="Learn about our quest to empower young professionals and conquer the challenges facing our communities through service." />
-    </Helmet>
+
 
     <PageHeader title="Who We Are" subtitle="A formidable club of students and young professionals." />
     <section className="py-24 bg-white relative">
@@ -1146,7 +1133,7 @@ const AboutView = () => (
           <div className="relative h-[450px] md:h-[550px] w-full hidden sm:block">
             <div className="absolute top-0 right-0 w-3/4 h-[85%] bg-white rounded-3xl border-[8px] border-white shadow-[0_20px_50px_rgba(1,47,100,0.06)] flex flex-col items-center justify-center overflow-hidden group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(225,29,72,0.1)] z-10 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-white to-slate-100 opacity-90"></div>
-              <div className="absolute inset-4 border-2 border-[#012f64]/20 rounded-2xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.97] transition-all duration-500"><img src="src/assets/Home page and Assts/2.png" alt="Rotaract club activities and impacts graphic" /></div>
+              <div className="absolute inset-4 border-2 border-[#012f64]/20 rounded-2xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.97] transition-all duration-500"><img loading="lazy" src="src/assets/Home page and Assts/2.png" alt="Rotaract club activities and impacts graphic" /></div>
               <div className="">
 
               </div>
@@ -1156,7 +1143,7 @@ const AboutView = () => (
             </div>
             <div className="absolute bottom-0 left-4 w-[55%] h-[55%] bg-[#012f64] rounded-3xl border-[8px] border-white shadow-[0_20px_50px_rgba(1,47,100,0.1)] flex flex-col items-center justify-center overflow-hidden group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(206,29,83,0.15)] z-20 hover:scale-105">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#012f64] via-[#012f64] to-[#02438c] opacity-90"></div>
-              <div className="absolute inset-3 border-2 border-white/20 rounded-xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.95] transition-all duration-500"><img src="src/assets/Home page and Assts/1.png" alt="Members of Rotaract collaborating" /></div>
+              <div className="absolute inset-3 border-2 border-white/20 rounded-xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.95] transition-all duration-500"><img loading="lazy" src="src/assets/Home page and Assts/1.png" alt="Members of Rotaract collaborating" /></div>
               <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md border border-white/20 mb-3 relative z-10 group-hover:-translate-y-2 transition-transform duration-500 shadow-sm">
               </div>
               <span className="text-white font-bold uppercase tracking-widest text-[9px] relative z-10 group-hover:text-[#ce1d53] transition-colors duration-500 text-center px-4 py-1.5 bg-black/20 rounded-full border border-white/10 shadow-sm">
@@ -1210,7 +1197,7 @@ const AboutView = () => (
             <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.08)] group bg-white border-[6px] border-white transition-all hover:shadow-[0_25px_60px_rgba(206,29,83,0.1)]">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-white"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <img src="src\assets\Home page and Assts\home.jpg" alt="President" className="w-full h-full object-cover" />
+                <img loading="lazy" src="src\assets\Home page and Assts\home.jpg" alt="President" className="w-full h-full object-cover" />
               </div>
               <div className="absolute top-8 left-8 text-[#ce1d53] transform -rotate-12 opacity-80">
                 <Flame className="w-8 h-8" />
@@ -1379,7 +1366,7 @@ const BloodDonationView = () => {
               <div key={video.id} className="bg-white rounded-[2rem] overflow-hidden border border-[#012f64]/10 shadow-[0_15px_40px_rgba(1,47,100,0.05)] hover:shadow-[0_25px_60px_rgba(206,29,83,0.12)] hover:border-[#ce1d53]/30 transition-all duration-500 group cursor-pointer transform hover:-translate-y-2 flex flex-col">
                 {/* Cinematic Video Preview Container */}
                 <div className="relative aspect-video bg-slate-900 overflow-hidden shrink-0">
-                  <img src={video.thumbnail} alt={video.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out opacity-80 group-hover:opacity-100 mix-blend-overlay" />
+                  <img loading="lazy" src={video.thumbnail} alt={video.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out opacity-80 group-hover:opacity-100 mix-blend-overlay" />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
 
@@ -1449,7 +1436,7 @@ const BloodDonationView = () => {
 const ProjectCard = ({ project, onClick }) => (
   <div className="bg-white rounded-2xl shadow-sm border border-[#012f64]/10 overflow-hidden hover:shadow-[0_10px_30px_rgba(206,29,83,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col group cursor-pointer" onClick={() => onClick(project)}>
     <div className="w-full aspect-[4/5] overflow-hidden bg-slate-100 relative">
-      <img src={project.image} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+      <img loading="lazy" src={project.image} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm border border-[#012f64]/5">
         <span className="text-[10px] font-black text-[#012f64] tracking-widest uppercase">{project.date}</span>
       </div>
@@ -1478,12 +1465,7 @@ const ProjectsView = ({ catalog }) => {
   if (selectedProject) {
     return (
       <div className="animate-[fadeIn_0.3s_ease-in-out]">
-        <Helmet>
-          <title>{`${selectedProject.title} | Projects - RAC IIE`}</title>
-          <meta name="description" content={`Learn more about our project: ${selectedProject.title} - ${selectedProject.desc || 'Explore our community impact.'}`} />
-          <meta property="og:title" content={`${selectedProject.title} | Projects - RAC IIE`} />
-          <meta property="og:description" content={`Learn more about our project: ${selectedProject.title} - ${selectedProject.desc || 'Explore our community impact.'}`} />
-        </Helmet>
+
 
         <PageHeader title={selectedProject.title} subtitle="Project Details & Impact" />
 
@@ -1498,7 +1480,7 @@ const ProjectsView = ({ catalog }) => {
             </button>
 
             <div className="w-full aspect-video md:aspect-[21/9] rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(1,47,100,0.08)] mb-12 border border-[#012f64]/10 bg-slate-100">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
+              <img loading="lazy" src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
             </div>
 
             <div className="bg-white rounded-[2.5rem] shadow-sm border border-[#012f64]/10 p-8 md:p-16 relative overflow-hidden">
@@ -1530,7 +1512,7 @@ const ProjectsView = ({ catalog }) => {
                           className="w-full break-inside-avoid rounded-2xl overflow-hidden shadow-sm border border-[#012f64]/10 group relative cursor-pointer"
                           onClick={() => setPreviewImage(img)}
                         >
-                          <img src={img} alt={`${selectedProject.title} Action ${idx + 1}`} className="w-full h-auto object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                          <img loading="lazy" src={img} alt={`${selectedProject.title} Action ${idx + 1}`} className="w-full h-auto object-cover transform group-hover:scale-110 transition-transform duration-700" />
                           <div className="absolute inset-0 bg-[#012f64]/0 group-hover:bg-[#012f64]/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
                             <ImageIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-md" />
                           </div>
@@ -1549,7 +1531,7 @@ const ProjectsView = ({ catalog }) => {
             <button className="absolute top-6 right-6 text-white/50 hover:text-white bg-black/20 hover:bg-black/80 rounded-full p-2 transition-all cursor-pointer" onClick={(e) => { e.stopPropagation(); setPreviewImage(null); }}>
               <X className="w-8 h-8" />
             </button>
-            <img src={previewImage} alt="Expanded Preview" className="max-w-full max-h-full object-contain rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] cursor-auto" onClick={(e) => e.stopPropagation()} />
+            <img loading="lazy" src={previewImage} alt="Expanded Preview" className="max-w-full max-h-full object-contain rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] cursor-auto" onClick={(e) => e.stopPropagation()} />
           </div>
         )}
       </div>
@@ -1820,7 +1802,7 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
                 {catalog[activeTab].map(proj => (
                   <div key={proj.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col group">
                     <div className="aspect-video w-full bg-slate-100 relative">
-                      <img src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
+                      <img loading="lazy" src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
                       <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-[9px] font-black uppercase tracking-widest text-[#012f64]">
                         {proj.date}
                       </div>
@@ -1927,7 +1909,7 @@ const GalleryView = () => {
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 md:gap-8 space-y-6 md:space-y-8">
               {selectedAlbum.images.map((img, idx) => (
                 <div key={idx} className="w-full break-inside-avoid rounded-2xl overflow-hidden shadow-sm border border-[#012f64]/10 group cursor-pointer bg-slate-50 relative" onClick={() => setPreviewImage(img)}>
-                  <img src={img} alt={`${selectedAlbum.title} Capture ${idx + 1}`} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                  <img loading="lazy" src={img} alt={`${selectedAlbum.title} Capture ${idx + 1}`} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-[#012f64]/0 group-hover:bg-[#012f64]/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
                     <ImageIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-md" />
                   </div>
@@ -1941,7 +1923,7 @@ const GalleryView = () => {
             <button className="absolute top-6 right-6 text-white/50 hover:text-white bg-black/20 hover:bg-black/80 rounded-full p-2 transition-all cursor-pointer" onClick={(e) => { e.stopPropagation(); setPreviewImage(null); }}>
               <X className="w-8 h-8" />
             </button>
-            <img src={previewImage} alt="Expanded Preview" className="max-w-full max-h-full object-contain rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] cursor-auto" onClick={(e) => e.stopPropagation()} />
+            <img loading="lazy" src={previewImage} alt="Expanded Preview" className="max-w-full max-h-full object-contain rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] cursor-auto" onClick={(e) => e.stopPropagation()} />
           </div>
         )}
       </div>
@@ -1964,7 +1946,7 @@ const GalleryView = () => {
                 <div className="absolute inset-0 bg-slate-50 rounded-3xl transform translate-y-1.5 translate-x-1.5 border border-slate-200 group-hover:translate-y-2 group-hover:translate-x-2 transition-transform duration-500 -z-10"></div>
                 <div className="bg-white rounded-3xl p-4 shadow-sm border border-[#012f64]/10 group-hover:shadow-[0_15px_40px_rgba(1,47,100,0.08)] group-hover:border-[#ce1d53]/40 transition-all duration-500 relative z-10 flex flex-col h-full">
                   <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden relative mb-5 bg-slate-100">
-                    <img src={album.cover} alt={album.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                    <img loading="lazy" src={album.cover} alt={album.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-white flex items-center gap-2">
                       <ImageIcon className="w-3.5 h-3.5 text-[#ce1d53]" />
                       <span className="text-[11px] font-black text-[#012f64] tracking-widest">{album.images.length}</span>
@@ -2408,12 +2390,7 @@ const ContactView = () => {
 
   return (
     <div className="animate-[fadeIn_0.5s_ease-in-out]">
-      <Helmet>
-        <title>Contact Us | Rotaract Club of Info Institute of Engineering</title>
-        <meta name="description" content="Get in touch with the Rotaract Club of Info Institute of Engineering. Join our club, forge an alliance, or send us a message." />
-        <meta property="og:title" content="Contact Us | RAC IIE" />
-        <meta property="og:description" content="Get in touch with the Rotaract Club of Info Institute of Engineering. Join our club, forge an alliance, or send us a message." />
-      </Helmet>
+
 
       <PageHeader title="Contact & Alliance" subtitle="Join our club or forge an alliance!" />
       <section className="py-24 bg-slate-50 relative overflow-hidden">
@@ -2608,10 +2585,7 @@ const ClubDocumentsView = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 relative overflow-hidden animate-[fadeIn_0.5s_ease-in-out]">
-        <Helmet>
-          <title>Restricted Vault | RAC IIE</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
+
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(1,47,100,0.05)_0%,_transparent_100%)] pointer-events-none"></div>
         <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-[0_20px_60px_rgba(1,47,100,0.08)] border border-[#012f64]/10 p-12 relative z-10">
           <div className="text-center mb-10">
@@ -2884,81 +2858,117 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800 selection:bg-[#ce1d53] selection:text-white flex flex-col cursor-none">
-      <RotaractCursor />
-      <nav className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#012f64]/10">
-        <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-24">
-            <div className="flex items-center cursor-pointer group py-3" onClick={() => handleNav('Home')}>
-              <div className="flex-shrink-0 flex items-center gap-4">
-                <img src={SITE_IMAGES.logo} alt="Rotaract Club Logo" className="h-16 w-auto object-contain group-hover:scale-105 transition-all duration-300" onError={(e) => { e.target.style.display = 'none'; }} />
-                <div className="hidden sm:flex flex-col border-l border-[#012f64]/20 pl-4">
-                  <span className="font-light text-xl text-[#012f64] leading-tight tracking-widest uppercase">Rotaract Club of</span>
-                  <span className="text-sm text-[#ce1d53] font-normal tracking-widest uppercase mt-0.5">Info Institute of Engineering</span>
+    <HelmetProvider>
+      {(() => {
+        const getSeoData = () => {
+          switch (currentPage) {
+            case 'Home': return { title: "Home | RAC IIE", desc: "Welcome to the Rotaract Club of Info Institute of Engineering." };
+            case 'About Us': return { title: "About Us | RAC IIE", desc: "Learn about our rich history, mission, and the Dragon Clan leadership team at RAC IIE." };
+            case 'Projects': return { title: "Projects | RAC IIE", desc: "Explore our ongoing, upcoming, and completed community service and professional development projects." };
+            case 'Gallery': return { title: "Gallery | RAC IIE", desc: "Browse through moments captured during our flagship events and community outreach programs." };
+            case 'Contact': return { title: "Contact Us | RAC IIE", desc: "Get in touch with the Rotaract Club of Info Institute of Engineering." };
+            case 'Admin': return { title: "Admin Portal | RAC IIE", desc: "Restricted Project Management Center." };
+            case 'Club Documents': return { title: "Club Documents | RAC IIE", desc: "Official archives and administrative files of RAC IIE." };
+            default: return { title: "Rotaract Club of Info Institute of Engineering", desc: "Official website of RAC IIE." };
+          }
+        };
+        const seo = getSeoData();
+        return (
+          <Helmet key={currentPage}>
+            <title>{seo.title}</title>
+            <meta name="description" content={seo.desc} />
+            <meta property="og:title" content={seo.title} />
+            <meta property="og:description" content={seo.desc} />
+            <meta name="twitter:title" content={seo.title} />
+            <meta name="twitter:description" content={seo.desc} />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "NGO",
+                "name": "Rotaract Club of Info Institute of Engineering",
+                "url": "https://racinfo.org",
+                "logo": "https://racinfo.org/assets/Colour.png"
+              })}
+            </script>
+          </Helmet>
+        );
+      })()}
+      <div className="min-h-screen bg-white font-sans text-slate-800 selection:bg-[#ce1d53] selection:text-white flex flex-col cursor-none">
+        <RotaractCursor />
+        <nav className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#012f64]/10">
+          <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-24">
+              <div className="flex items-center cursor-pointer group py-3" onClick={() => handleNav('Home')}>
+                <div className="flex-shrink-0 flex items-center gap-4">
+                  <img loading="lazy" src={SITE_IMAGES.logo} alt="Rotaract Club Logo" className="h-16 w-auto object-contain group-hover:scale-105 transition-all duration-300" onError={(e) => { e.target.style.display = 'none'; }} />
+                  <div className="hidden sm:flex flex-col border-l border-[#012f64]/20 pl-4">
+                    <span className="font-light text-xl text-[#012f64] leading-tight tracking-widest uppercase">Rotaract Club of</span>
+                    <span className="text-sm text-[#ce1d53] font-normal tracking-widest uppercase mt-0.5">Info Institute of Engineering</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="hidden xl:flex items-center space-x-2">
-              {primaryNavLinks.map((link) => (
-                <button key={link} onClick={() => handleNav(link)} className={`px-4 py-2 rounded-lg font-light text-sm transition-all uppercase tracking-widest ${currentPage === link ? 'text-[#ce1d53] bg-[#ce1d53]/10 font-medium' : 'text-slate-600 hover:text-[#ce1d53] hover:bg-[#012f64]/5'} cursor-pointer`}>{link}</button>
-              ))}
-              <div className="relative">
-                <button onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)} className={`flex items-center px-4 py-2 rounded-lg font-light text-sm transition-all uppercase tracking-widest text-slate-600 hover:text-[#ce1d53] hover:bg-[#012f64]/5 cursor-pointer`}>More <ChevronDown className="ml-1 w-4 h-4" /></button>
-                {isMoreMenuOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-56 bg-white border border-[#012f64]/10 rounded-xl shadow-lg overflow-hidden py-2 animate-[fadeIn_0.2s_ease-in-out]">
-                    {moreNavLinks.map((link) => (
-                      <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-6 py-3 font-light text-sm uppercase tracking-wider transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-[#012f64]/5 hover:text-[#ce1d53]'}`}>{link}</button>
-                    ))}
-                  </div>
-                )}
+              <div className="hidden xl:flex items-center space-x-2">
+                {primaryNavLinks.map((link) => (
+                  <button key={link} onClick={() => handleNav(link)} className={`px-4 py-2 rounded-lg font-light text-sm transition-all uppercase tracking-widest ${currentPage === link ? 'text-[#ce1d53] bg-[#ce1d53]/10 font-medium' : 'text-slate-600 hover:text-[#ce1d53] hover:bg-[#012f64]/5'} cursor-pointer`}>{link}</button>
+                ))}
+                <div className="relative">
+                  <button onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)} className={`flex items-center px-4 py-2 rounded-lg font-light text-sm transition-all uppercase tracking-widest text-slate-600 hover:text-[#ce1d53] hover:bg-[#012f64]/5 cursor-pointer`}>More <ChevronDown className="ml-1 w-4 h-4" /></button>
+                  {isMoreMenuOpen && (
+                    <div className="absolute top-full right-0 mt-2 w-56 bg-white border border-[#012f64]/10 rounded-xl shadow-lg overflow-hidden py-2 animate-[fadeIn_0.2s_ease-in-out]">
+                      {moreNavLinks.map((link) => (
+                        <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-6 py-3 font-light text-sm uppercase tracking-wider transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-[#012f64]/5 hover:text-[#ce1d53]'}`}>{link}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <button onClick={() => handleNav('Contact')} className="ml-6 bg-gradient-to-r from-[#ce1d53] to-[#a81743] text-white px-6 py-2.5 rounded font-medium hover:from-[#a81743] hover:to-[#ce1d53] transition-colors shadow-sm uppercase tracking-widest cursor-pointer">Join Us</button>
               </div>
-              <button onClick={() => handleNav('Contact')} className="ml-6 bg-gradient-to-r from-[#ce1d53] to-[#a81743] text-white px-6 py-2.5 rounded font-medium hover:from-[#a81743] hover:to-[#ce1d53] transition-colors shadow-sm uppercase tracking-widest cursor-pointer">Join Us</button>
-            </div>
-            <div className="xl:hidden flex items-center">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-[#ce1d53] focus:outline-none p-2 bg-white hover:bg-[#012f64]/5 rounded-lg transition-colors cursor-pointer">{isMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}</button>
-            </div>
-          </div>
-        </div>
-        {isMenuOpen && (
-          <div className="xl:hidden bg-white border-t border-[#012f64]/10 pb-6 shadow-xl absolute w-full left-0 max-h-[80vh] overflow-y-auto">
-            <div className="px-4 pt-4 pb-3 space-y-2 sm:px-6">
-              <div className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-2 px-4">Primary</div>
-              {primaryNavLinks.map((link) => (
-                <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-4 py-3 rounded-lg font-light uppercase tracking-widest text-sm transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-[#ce1d53]'}`}>{link}</button>
-              ))}
-              <div className="text-xs font-medium text-slate-400 uppercase tracking-widest mt-6 mb-2 px-4 pt-4 border-t border-slate-100">More Pages</div>
-              {moreNavLinks.map((link) => (
-                <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-4 py-3 rounded-lg font-light uppercase tracking-widest text-sm transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-[#ce1d53]'}`}>{link}</button>
-              ))}
+              <div className="xl:hidden flex items-center">
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-[#ce1d53] focus:outline-none p-2 bg-white hover:bg-[#012f64]/5 rounded-lg transition-colors cursor-pointer">{isMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}</button>
+              </div>
             </div>
           </div>
-        )}
-      </nav>
-      <main className="flex-grow">{renderPage()}</main>
-      <footer className="bg-white text-slate-500 py-16 border-t border-[#012f64]/10 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-between items-center lg:items-start gap-12 lg:gap-8">
-          <div className="text-center lg:text-left flex flex-col items-center lg:items-start gap-6 max-w-md">
-            <img src={SITE_IMAGES.logo} alt="Footer Logo" className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 filter grayscale contrast-125 hover:grayscale-0 shrink-0 cursor-pointer" onClick={() => handleNav('Home')} onError={(e) => { e.target.style.display = 'none'; }} />
-            <div>
-              <p className="text-[#012f64] font-bold mb-2 text-lg tracking-wide">© {new Date().getFullYear()} Rotaract Club of Info Institute of Engineering.</p>
-              <p className="text-sm font-medium uppercase tracking-widest text-slate-500">© Developed by RINESH GURU S & SIVASHANKARAN R</p>
+          {isMenuOpen && (
+            <div className="xl:hidden bg-white border-t border-[#012f64]/10 pb-6 shadow-xl absolute w-full left-0 max-h-[80vh] overflow-y-auto">
+              <div className="px-4 pt-4 pb-3 space-y-2 sm:px-6">
+                <div className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-2 px-4">Primary</div>
+                {primaryNavLinks.map((link) => (
+                  <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-4 py-3 rounded-lg font-light uppercase tracking-widest text-sm transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-[#ce1d53]'}`}>{link}</button>
+                ))}
+                <div className="text-xs font-medium text-slate-400 uppercase tracking-widest mt-6 mb-2 px-4 pt-4 border-t border-slate-100">More Pages</div>
+                {moreNavLinks.map((link) => (
+                  <button key={link} onClick={() => handleNav(link)} className={`w-full text-left px-4 py-3 rounded-lg font-light uppercase tracking-widest text-sm transition-colors cursor-pointer ${currentPage === link ? 'bg-[#ce1d53]/10 text-[#ce1d53] font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-[#ce1d53]'}`}>{link}</button>
+                ))}
+              </div>
+            </div>
+          )}
+        </nav>
+        <main className="flex-grow">{renderPage()}</main>
+        <footer className="bg-white text-slate-500 py-16 border-t border-[#012f64]/10 mt-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-between items-center lg:items-start gap-12 lg:gap-8">
+            <div className="text-center lg:text-left flex flex-col items-center lg:items-start gap-6 max-w-md">
+              <img loading="lazy" src={SITE_IMAGES.logo} alt="Footer Logo" className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 filter grayscale contrast-125 hover:grayscale-0 shrink-0 cursor-pointer" onClick={() => handleNav('Home')} onError={(e) => { e.target.style.display = 'none'; }} />
+              <div>
+                <p className="text-[#012f64] font-bold mb-2 text-lg tracking-wide">© {new Date().getFullYear()} Rotaract Club of Info Institute of Engineering.</p>
+                <p className="text-sm font-medium uppercase tracking-widest text-slate-500">© Developed by RINESH GURU S & SIVASHANKARAN R</p>
+              </div>
+            </div>
+            <div className="text-center lg:text-left flex flex-col gap-1">
+              <p className="text-[#012f64] font-black uppercase tracking-widest text-sm mb-2">Our Stronghold</p>
+              <p className="text-sm font-medium text-slate-600">Info Institute of Engineering</p>
+              <p className="text-sm font-medium text-slate-600">Sathy Road, Kovilpalayam,</p>
+              <p className="text-sm font-medium text-slate-600">Coimbatore, Tamil Nadu 641107</p>
+              <p className="text-sm font-bold text-[#ce1d53] mt-3 cursor-pointer hover:text-[#a81743] transition-colors">+91 73975 11613 <span className="text-slate-400 font-medium ml-1 uppercase text-xs tracking-widest">(President)</span></p>
+              <p className="text-sm font-bold text-[#ce1d53] cursor-pointer hover:text-[#a81743] transition-colors">racinfo3206@gmail.com</p>
+            </div>
+            <div className="flex gap-6 shrink-0">
+              <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">Facebook</span><span className="font-black text-sm uppercase tracking-widest">FB</span></button>
+              <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">Instagram</span><span className="font-black text-sm uppercase tracking-widest">IG</span></button>
+              <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">LinkedIn</span><span className="font-black text-sm uppercase tracking-widest">IN</span></button>
             </div>
           </div>
-          <div className="text-center lg:text-left flex flex-col gap-1">
-            <p className="text-[#012f64] font-black uppercase tracking-widest text-sm mb-2">Our Stronghold</p>
-            <p className="text-sm font-medium text-slate-600">Info Institute of Engineering</p>
-            <p className="text-sm font-medium text-slate-600">Sathy Road, Kovilpalayam,</p>
-            <p className="text-sm font-medium text-slate-600">Coimbatore, Tamil Nadu 641107</p>
-            <p className="text-sm font-bold text-[#ce1d53] mt-3 cursor-pointer hover:text-[#a81743] transition-colors">+91 73975 11613 <span className="text-slate-400 font-medium ml-1 uppercase text-xs tracking-widest">(President)</span></p>
-            <p className="text-sm font-bold text-[#ce1d53] cursor-pointer hover:text-[#a81743] transition-colors">racinfo3206@gmail.com</p>
-          </div>
-          <div className="flex gap-6 shrink-0">
-            <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">Facebook</span><span className="font-black text-sm uppercase tracking-widest">FB</span></button>
-            <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">Instagram</span><span className="font-black text-sm uppercase tracking-widest">IG</span></button>
-            <button className="w-14 h-14 rounded-full bg-white border border-[#012f64]/20 flex items-center justify-center hover:bg-[#ce1d53] hover:text-white hover:border-[#ce1d53] transition-all transform hover:-translate-y-1 shadow-sm text-[#012f64] cursor-pointer"><span className="sr-only">LinkedIn</span><span className="font-black text-sm uppercase tracking-widest">IN</span></button>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </HelmetProvider>
   );
 }
