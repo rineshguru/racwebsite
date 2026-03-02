@@ -1596,7 +1596,7 @@ const ProjectsView = ({ catalog }) => {
 // ============================================================================
 // ADMIN SECURE PORTAL
 // ============================================================================
-const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
+const AdminView = ({ catalog, setCatalog, galleryCatalog, setGalleryCatalog, authState, setAuth }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -1612,9 +1612,85 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
   const [mainImageFile, setMainImageFile] = useState(null);
   const [actionImageFiles, setActionImageFiles] = useState([]);
 
+  // Gallery Management State
+  const [activeGalleryAlbum, setActiveGalleryAlbum] = useState(null);
+  const [galleryTitle, setGalleryTitle] = useState('');
+  const [galleryDate, setGalleryDate] = useState('');
+  const [galleryCover, setGalleryCover] = useState(null);
+  const [singleGalleryImage, setSingleGalleryImage] = useState(null);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  // Gallery API Handlers
+  const handleAddGalleryAlbum = async (e) => {
+    e.preventDefault();
+    if (!galleryTitle || !galleryDate) return;
+    const formData = new FormData();
+    formData.append('id', `gal${Date.now()}`);
+    formData.append('title', galleryTitle);
+    formData.append('date', galleryDate);
+    if (galleryCover) formData.append('cover', galleryCover);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/gallery`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        setGalleryCatalog(prev => [data.folder, ...prev]);
+        setGalleryTitle('');
+        setGalleryDate('');
+        setGalleryCover(null);
+        setFormKey(Date.now());
+      }
+    } catch (err) { console.error(err); }
+  };
+
+  const handleDeleteGalleryAlbum = async (id) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setGalleryCatalog(prev => prev.filter(g => g.id !== id));
+        if (activeGalleryAlbum && activeGalleryAlbum.id === id) setActiveGalleryAlbum(null);
+      }
+    } catch (err) { console.error(err); }
+  };
+
+  const handleAddGalleryImage = async (e, id) => {
+    e.preventDefault();
+    if (!singleGalleryImage) return;
+    const formData = new FormData();
+    formData.append('image', singleGalleryImage);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}/images`, { method: 'PUT', body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        setGalleryCatalog(prev => prev.map(g => g.id === id ? { ...g, images: [...g.images, data.imageUrl] } : g));
+        if (activeGalleryAlbum && activeGalleryAlbum.id === id) {
+          setActiveGalleryAlbum(prev => ({ ...prev, images: [...prev.images, data.imageUrl] }));
+        }
+        setSingleGalleryImage(null);
+        setFormKey(Date.now() + 1);
+      }
+    } catch (err) { console.error(err); }
+  };
+
+  const handleDeleteGalleryImage = async (id, imageUrl) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}/images`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl })
+      });
+      if (res.ok) {
+        setGalleryCatalog(prev => prev.map(g => g.id === id ? { ...g, images: g.images.filter(img => img !== imageUrl) } : g));
+        if (activeGalleryAlbum && activeGalleryAlbum.id === id) {
+          setActiveGalleryAlbum(prev => ({ ...prev, images: prev.images.filter(img => img !== imageUrl) }));
+        }
+      }
+    } catch (err) { console.error(err); }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -1777,13 +1853,13 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-16">
         <div className="bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(1,47,100,0.06)] border border-[#012f64]/10 p-4 mb-10 flex flex-wrap gap-2 justify-center lg:justify-start">
-          {['ongoing', 'upcoming', 'completed', 'flagship'].map(tab => (
+          {['ongoing', 'upcoming', 'completed', 'flagship', 'gallery'].map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => { setActiveTab(tab); setActiveGalleryAlbum(null); }}
               className={`px-8 py-4 rounded-[1.5rem] font-black uppercase tracking-widest text-xs transition-all cursor-pointer ${activeTab === tab ? 'bg-[#ce1d53] text-white shadow-[0_10px_20px_rgba(206,29,83,0.3)]' : 'bg-transparent text-slate-500 hover:bg-slate-50 hover:text-[#012f64]'}`}
             >
-              {tab} Quests
+              {tab === 'gallery' ? 'Gallery' : `${tab} Quests`}
             </button>
           ))}
         </div>
@@ -1793,7 +1869,62 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
             <h3 className="text-2xl font-black text-[#012f64] uppercase tracking-wide flex items-center gap-3">
               <span className="w-6 h-1 bg-[#ce1d53] rounded-full"></span> Active Directory
             </h3>
-            {catalog[activeTab].length === 0 ? (
+            {activeTab === 'gallery' ? (
+              activeGalleryAlbum ? (
+                <div className="space-y-6">
+                  <button onClick={() => setActiveGalleryAlbum(null)} className="inline-flex items-center text-slate-500 hover:text-[#ce1d53] font-black uppercase tracking-widest text-xs transition-colors cursor-pointer group">
+                    <ChevronRight className="w-4 h-4 mr-1 rotate-180 group-hover:-translate-x-1 transition-transform" /> Back to Folders
+                  </button>
+                  <div className="flex items-center gap-4 mb-4">
+                    <img src={activeGalleryAlbum.cover} alt="cover" className="w-16 h-16 rounded-xl object-cover" />
+                    <div>
+                      <h4 className="font-black text-[#012f64] text-xl">{activeGalleryAlbum.title}</h4>
+                      <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">{activeGalleryAlbum.date} • {activeGalleryAlbum.images.length} Images</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {activeGalleryAlbum.images.map((img, idx) => (
+                      <div key={idx} className="relative group rounded-xl overflow-hidden aspect-[4/3] bg-slate-100 border border-slate-200">
+                        <img src={img} alt={`img-${idx}`} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button onClick={() => handleDeleteGalleryImage(activeGalleryAlbum.id, img)} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full cursor-pointer transform hover:scale-110 transition-transform">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                galleryCatalog.length === 0 ? (
+                  <div className="bg-white rounded-[2rem] border-2 border-dashed border-slate-200 p-16 text-center">
+                    <p className="text-slate-400 font-bold uppercase tracking-widest">No Gallery Folders Found</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {galleryCatalog.map(folder => (
+                      <div key={folder.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col group cursor-pointer" onClick={() => setActiveGalleryAlbum(folder)}>
+                        <div className="aspect-video w-full bg-slate-100 relative">
+                          <img loading="lazy" src={folder.cover} alt={folder.title} className="w-full h-full object-cover" />
+                          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-[9px] font-black uppercase tracking-widest text-[#012f64]">
+                            {folder.date}
+                          </div>
+                          <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded shadow-sm text-[10px] font-bold text-white flex items-center gap-1">
+                            <ImageIcon className="w-3 h-3" /> {folder.images ? folder.images.length : 0}
+                          </div>
+                        </div>
+                        <div className="p-4 flex flex-col flex-grow">
+                          <h4 className="font-black text-[#012f64] text-lg mb-4">{folder.title}</h4>
+                          <button onClick={(e) => { e.stopPropagation(); handleDeleteGalleryAlbum(folder.id); }} className="mt-auto w-full py-2 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 font-bold uppercase tracking-widest text-[10px] transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                            <Trash2 className="w-4 h-4" /> Delete Folder
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              )
+            ) : catalog[activeTab].length === 0 ? (
               <div className="bg-white rounded-[2rem] border-2 border-dashed border-slate-200 p-16 text-center">
                 <p className="text-slate-400 font-bold uppercase tracking-widest">No Quests in this Category</p>
               </div>
@@ -1826,55 +1957,103 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
                 <Plus className="w-5 h-5 text-[#ce1d53]" /> Forge New
               </h3>
 
-              <form key={formKey} onSubmit={handleAddProject} className="space-y-6">
-                <div>
-                  <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Quest Title</label>
-                  <input type="text" required value={newTitle} onChange={e => setNewTitle(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. DAYA 2026" />
-                </div>
+              {activeTab === 'gallery' ? (
+                activeGalleryAlbum ? (
+                  <form key={formKey} onSubmit={(e) => handleAddGalleryImage(e, activeGalleryAlbum.id)} className="space-y-6">
+                    <div>
+                      <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Upload to Folder</label>
+                      <div className="relative group cursor-pointer">
+                        <input type="file" required accept="image/*" onChange={e => setSingleGalleryImage(e.target.files[0])} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                        <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
+                          <UploadCloud className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
+                          <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
+                            {singleGalleryImage ? singleGalleryImage.name : 'Choose Image File'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" className="w-full bg-[#012f64] hover:bg-[#02438c] text-white font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-sm cursor-pointer mt-6">
+                      Upload Image
+                    </button>
+                  </form>
+                ) : (
+                  <form key={formKey} onSubmit={handleAddGalleryAlbum} className="space-y-6">
+                    <div>
+                      <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Folder Title</label>
+                      <input type="text" required value={galleryTitle} onChange={e => setGalleryTitle(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. DAYA 2026" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Date Tag</label>
+                      <input type="text" required value={galleryDate} onChange={e => setGalleryDate(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. March 2026" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Folder Cover</label>
+                      <div className="relative group cursor-pointer">
+                        <input type="file" required accept="image/*" onChange={e => setGalleryCover(e.target.files[0])} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                        <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
+                          <UploadCloud className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
+                          <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
+                            {galleryCover ? galleryCover.name : 'Upload Cover Image'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" className="w-full bg-[#012f64] hover:bg-[#02438c] text-white font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-sm cursor-pointer mt-6">
+                      Create Folder
+                    </button>
+                  </form>
+                )
+              ) : (
+                <form key={formKey} onSubmit={handleAddProject} className="space-y-6">
+                  <div>
+                    <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Quest Title</label>
+                    <input type="text" required value={newTitle} onChange={e => setNewTitle(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. DAYA 2026" />
+                  </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Temporal Tag (Date)</label>
-                  <input type="text" required value={newDate} onChange={e => setNewDate(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. March 2026" />
-                </div>
+                  <div>
+                    <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Temporal Tag (Date)</label>
+                    <input type="text" required value={newDate} onChange={e => setNewDate(e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64]" placeholder="e.g. March 2026" />
+                  </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Brief Pitch</label>
-                  <textarea required value={newShortDesc} onChange={e => setNewShortDesc(e.target.value)} rows="2" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64] resize-none" placeholder="One liner about the project..."></textarea>
-                </div>
+                  <div>
+                    <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Brief Pitch</label>
+                    <textarea required value={newShortDesc} onChange={e => setNewShortDesc(e.target.value)} rows="2" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64] resize-none" placeholder="One liner about the project..."></textarea>
+                  </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Full Lore (Description)</label>
-                  <textarea value={newFullDesc} onChange={e => setNewFullDesc(e.target.value)} rows="4" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64] resize-none" placeholder="Detailed description..."></textarea>
-                </div>
+                  <div>
+                    <label className="text-[10px] font-black text-[#012f64] uppercase tracking-widest ml-2 block mb-1">Full Lore (Description)</label>
+                    <textarea value={newFullDesc} onChange={e => setNewFullDesc(e.target.value)} rows="4" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ce1d53]/20 focus:border-[#ce1d53] text-sm text-[#012f64] resize-none" placeholder="Detailed description..."></textarea>
+                  </div>
 
-                <div className="space-y-3 pt-2">
-                  <label className="text-[10px] font-black text-[#ce1d53] uppercase tracking-widest block border-b border-slate-100 pb-2">Visual Assets</label>
+                  <div className="space-y-3 pt-2">
+                    <label className="text-[10px] font-black text-[#ce1d53] uppercase tracking-widest block border-b border-slate-100 pb-2">Visual Assets</label>
 
-                  <div className="relative group cursor-pointer">
-                    <input type="file" accept="image/*" onChange={e => setMainImageFile(e.target.files[0])} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                    <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
-                      <UploadCloud className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
-                      <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
-                        {mainImageFile ? mainImageFile.name : 'Upload Primary Cover'}
-                      </span>
+                    <div className="relative group cursor-pointer">
+                      <input type="file" accept="image/*" onChange={e => setMainImageFile(e.target.files[0])} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                      <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
+                        <UploadCloud className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
+                        <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
+                          {mainImageFile ? mainImageFile.name : 'Upload Primary Cover'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="relative group cursor-pointer">
+                      <input type="file" accept="image/*" multiple onChange={e => setActionImageFiles(e.target.files)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                      <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
+                        <ImageIcon className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
+                        <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
+                          {actionImageFiles && actionImageFiles.length > 0 ? `${actionImageFiles.length} Gallery Files Attached` : 'Upload Action Gallery'}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="relative group cursor-pointer">
-                    <input type="file" accept="image/*" multiple onChange={e => setActionImageFiles(e.target.files)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                    <div className="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#ce1d53] group-hover:bg-[#ce1d53]/5 transition-all">
-                      <ImageIcon className="w-5 h-5 text-slate-400 group-hover:text-[#ce1d53]" />
-                      <span className="text-xs font-bold text-slate-500 group-hover:text-[#ce1d53] truncate max-w-[200px]">
-                        {actionImageFiles && actionImageFiles.length > 0 ? `${actionImageFiles.length} Gallery Files Attached` : 'Upload Action Gallery'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <button type="submit" className="w-full bg-[#012f64] hover:bg-[#02438c] text-white font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-[0_5px_15px_rgba(1,47,100,0.2)] hover:shadow-[0_10px_25px_rgba(1,47,100,0.3)] transform hover:-translate-y-1 cursor-pointer mt-6">
-                  Append to Archive
-                </button>
-              </form>
+                  <button type="submit" className="w-full bg-[#012f64] hover:bg-[#02438c] text-white font-black uppercase tracking-widest py-4 rounded-xl transition-all shadow-[0_5px_15px_rgba(1,47,100,0.2)] hover:shadow-[0_10px_25px_rgba(1,47,100,0.3)] transform hover:-translate-y-1 cursor-pointer mt-6">
+                    Append to Archive
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -1883,7 +2062,7 @@ const AdminView = ({ catalog, setCatalog, authState, setAuth }) => {
   );
 };
 
-const GalleryView = () => {
+const GalleryView = ({ albums }) => {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -1940,7 +2119,7 @@ const GalleryView = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-[#012f64] to-[#ce1d53] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-            {galleryAlbums.map((album) => (
+            {albums.map((album) => (
               <div key={album.id} onClick={() => setSelectedAlbum(album)} className="relative group cursor-pointer">
                 <div className="absolute inset-0 bg-slate-100 rounded-3xl transform translate-y-3 translate-x-3 border border-slate-200 group-hover:translate-y-4 group-hover:translate-x-4 transition-transform duration-500 -z-20"></div>
                 <div className="absolute inset-0 bg-slate-50 rounded-3xl transform translate-y-1.5 translate-x-1.5 border border-slate-200 group-hover:translate-y-2 group-hover:translate-x-2 transition-transform duration-500 -z-10"></div>
@@ -2813,6 +2992,7 @@ export default function App() {
 
   // App-level state to power dynamic admin interactions across views
   const [projectsState, setProjectsState] = useState(initialProjectCatalog);
+  const [galleryState, setGalleryState] = useState(galleryAlbums);
   const [isAdminAuth, setIsAdminAuth] = useState(false);
 
   useEffect(() => {
@@ -2824,6 +3004,15 @@ export default function App() {
         }
       })
       .catch(err => console.error("Error fetching projects:", err));
+
+    fetch(`${API_BASE_URL}/api/gallery`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setGalleryState(data);
+        }
+      })
+      .catch(err => console.error("Error fetching gallery:", err));
   }, []);
 
   useEffect(() => {
@@ -2846,12 +3035,12 @@ export default function App() {
       case 'About Us': return <AboutView />;
       case 'Blood Donation': return <BloodDonationView />;
       case 'Projects': return <ProjectsView catalog={projectsState} />;
-      case 'Gallery': return <GalleryView />;
+      case 'Gallery': return <GalleryView albums={galleryState} />;
       case 'Power Stones': return <PowerStonesView />;
       case 'Bulletin': return <BulletinView />;
       case 'Board': return <BoardView />;
       case 'Contact': return <ContactView />;
-      case 'Admin': return <AdminView catalog={projectsState} setCatalog={setProjectsState} authState={isAdminAuth} setAuth={setIsAdminAuth} />;
+      case 'Admin': return <AdminView catalog={projectsState} setCatalog={setProjectsState} galleryCatalog={galleryState} setGalleryCatalog={setGalleryState} authState={isAdminAuth} setAuth={setIsAdminAuth} />;
       case 'Club Documents': return <ClubDocumentsView />;
       default: return <HomeView setCurrentPage={setCurrentPage} />;
     }

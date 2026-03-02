@@ -38,6 +38,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
         url TEXT
       )`);
 
+            // Gallery Folders Table
+            db.run(`CREATE TABLE IF NOT EXISTS gallery_folders (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        date TEXT,
+        cover TEXT,
+        images TEXT
+      )`);
+
             // Seed initial data if projects are empty
             db.get("SELECT COUNT(*) AS count FROM projects", (err, row) => {
                 if (row && row.count === 0) {
@@ -122,6 +131,68 @@ const db = new sqlite3.Database(dbPath, (err) => {
                     ];
 
                     initialDocs.forEach(item => stmt.run(item));
+                    stmt.finalize();
+                }
+            });
+
+            // Seed initial Gallery Folders if empty
+            db.get("SELECT COUNT(*) AS count FROM gallery_folders", (err, row) => {
+                if (row && row.count === 0) {
+                    console.log("Seeding initial gallery folders...");
+                    const stmt = db.prepare(`INSERT INTO gallery_folders (id, title, date, cover, images) VALUES (?, ?, ?, ?, ?)`);
+                    const initialGallery = [
+                        [
+                            "gal1",
+                            "DAYA 2026",
+                            "Jan 2026",
+                            "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=800",
+                            JSON.stringify([
+                                "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&q=80&w=600"
+                            ])
+                        ],
+                        [
+                            "gal2",
+                            "ROBO Job Fair",
+                            "Dec 2025",
+                            "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800",
+                            JSON.stringify([
+                                "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&q=80&w=600"
+                            ])
+                        ],
+                        [
+                            "gal3",
+                            "STAR Fellowship",
+                            "Nov 2025",
+                            "https://images.unsplash.com/photo-1523580494112-071d16940d14?auto=format&fit=crop&q=80&w=800",
+                            JSON.stringify([
+                                "https://images.unsplash.com/photo-1523580494112-071d16940d14?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&q=80&w=600"
+                            ])
+                        ],
+                        [
+                            "gal4",
+                            "Green Earth Drive",
+                            "Oct 2025",
+                            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800",
+                            JSON.stringify([
+                                "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=600",
+                                "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600"
+                            ])
+                        ]
+                    ];
+                    initialGallery.forEach(item => stmt.run(item));
                     stmt.finalize();
                 }
             });
