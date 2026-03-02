@@ -5,7 +5,7 @@ import {
   Shield, Swords, MapPin, Phone, Mail, ChevronRight,
   ChevronDown, Flame, Zap, Heart, Users, Globe, Target, Gamepad2, Award,
   Image as ImageIcon, Play, Trash2, UploadCloud, Lock, User, Plus, LogOut,
-  Instagram, Linkedin, Eye, EyeOff, FileText, Download, Edit3
+  Instagram, Linkedin, Eye, EyeOff, FileText, Download, Edit3, MessageCircle
 } from 'lucide-react';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -2941,6 +2941,26 @@ const ClubDocumentsView = () => {
   );
 };
 
+const WhatsAppWidget = () => {
+  return (
+    <a
+      href="https://wa.me/917397511613"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 group flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.6)] transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      aria-label="Chat with us on WhatsApp"
+    >
+      <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-white"></div>
+      <MessageCircle className="w-7 h-7 md:w-8 md:h-8 text-white fill-current" />
+
+      {/* Tooltip */}
+      <span className="absolute right-full mr-4 bg-white text-slate-800 text-xs font-bold uppercase tracking-widest py-2 px-4 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap border border-slate-100">
+        Chat With Us
+      </span>
+    </a>
+  );
+};
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('Home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -3095,7 +3115,7 @@ export default function App() {
               <img loading="lazy" src={SITE_IMAGES.logo} alt="Footer Logo" className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300 filter grayscale contrast-125 hover:grayscale-0 shrink-0 cursor-pointer" onClick={() => handleNav('Home')} onError={(e) => { e.target.style.display = 'none'; }} />
               <div>
                 <p className="text-[#012f64] font-bold mb-2 text-lg tracking-wide">© {new Date().getFullYear()} Rotaract Club of Info Institute of Engineering.</p>
-                <p className="text-sm font-medium uppercase tracking-widest text-slate-500">© Developed by RINESH GURU S & SIVASHANKARAN R</p>
+                <p className="text-sm font-medium uppercase tracking-widest text-slate-500">© Developed by RINESH GURU S </p>
               </div>
             </div>
             <div className="text-center lg:text-left flex flex-col gap-1">
@@ -3113,6 +3133,7 @@ export default function App() {
             </div>
           </div>
         </footer>
+        <WhatsAppWidget />
       </div>
     </HelmetProvider>
   );
