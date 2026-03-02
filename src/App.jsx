@@ -14,13 +14,11 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const RotaractCursor = () => {
   const cursorRef = useRef(null);
-  const tailRefs = useRef([]);
   const requestRef = useRef(null);
 
   // Physics State
   const mouse = useRef({ x: 0, y: 0 });
   const target = useRef({ x: 0, y: 0 });
-  const tailCoords = useRef(Array.from({ length: 8 }, () => ({ x: 0, y: 0 })));
   const isFirstMove = useRef(true);
 
   const [isHovering, setIsHovering] = useState(false);
@@ -29,10 +27,8 @@ const RotaractCursor = () => {
     const handleMouseMove = (e) => {
       target.current = { x: e.clientX, y: e.clientY };
 
-      // Prevent the tail from flying in from the corner on initial load
       if (isFirstMove.current) {
         mouse.current = { x: e.clientX, y: e.clientY };
-        tailCoords.current.forEach(c => { c.x = e.clientX; c.y = e.clientY; });
         isFirstMove.current = false;
       }
     };
@@ -55,34 +51,14 @@ const RotaractCursor = () => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseover', handleMouseOver);
 
-    // 60FPS Kinematics Engine
+    // Minimal Kinematics Engine
     const animate = () => {
-      // Snappy lerp for the head
       mouse.current.x += (target.current.x - mouse.current.x) * 0.4;
       mouse.current.y += (target.current.y - mouse.current.y) * 0.4;
 
       if (cursorRef.current && !isFirstMove.current) {
         cursorRef.current.style.transform = `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0)`;
       }
-
-      // Spring physics for the segmented tail
-      let prevX = mouse.current.x;
-      let prevY = mouse.current.y;
-
-      tailCoords.current.forEach((coord, index) => {
-        const dx = prevX - coord.x;
-        const dy = prevY - coord.y;
-
-        coord.x += dx * 0.35;
-        coord.y += dy * 0.35;
-
-        if (tailRefs.current[index] && !isFirstMove.current) {
-          tailRefs.current[index].style.transform = `translate3d(${coord.x}px, ${coord.y}px, 0)`;
-        }
-
-        prevX = coord.x;
-        prevY = coord.y;
-      });
 
       requestRef.current = requestAnimationFrame(animate);
     };
@@ -106,37 +82,7 @@ const RotaractCursor = () => {
         }
       `}</style>
 
-      {/* SVG Gooey Filter for Liquid Magma Effect */}
-      <svg className="hidden">
-        <defs>
-          <filter id="dragon-goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-          </filter>
-        </defs>
-      </svg>
-
       <div className="hidden md:block pointer-events-none fixed inset-0 z-[9999]">
-
-        {/* Gooey Layer: The Trailing Magma Tail */}
-        <div className="absolute inset-0 pointer-events-none" style={{ filter: 'url(#dragon-goo)' }}>
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              ref={(el) => (tailRefs.current[i] = el)}
-              className="absolute top-0 left-0 rounded-full bg-[#ce1d53] will-change-transform"
-              style={{
-                width: `${24 - i * 2.5}px`,
-                height: `${24 - i * 2.5}px`,
-                marginLeft: `-${(24 - i * 2.5) / 2}px`,
-                marginTop: `-${(24 - i * 2.5) / 2}px`,
-                opacity: isHovering ? 0 : 1,
-                transition: 'opacity 0.4s ease-out'
-              }}
-            />
-          ))}
-        </div>
-
         {/* Crisp Layer: The Rotaract Wheel */}
         <div
           ref={cursorRef}
@@ -181,7 +127,6 @@ const RotaractCursor = () => {
           {/* Central dot on hover to act as absolute center pointer */}
           <div className={`absolute w-1.5 h-1.5 bg-[#ce1d53] rounded-full transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0'}`} />
         </div>
-
       </div>
     </>
   );
@@ -913,7 +858,7 @@ const HomeView = ({ setCurrentPage }) => {
               <span className="text-[#012f64] text-[10px] md:text-xs font-bold uppercase tracking-widest pr-2">Strength Through Unity</span>
             </div>
 
-            <img
+            <img loading="lazy"
               src={SITE_IMAGES.logo}
               alt="Rotaract Theme 2025-26 - Act Make An Impact"
               className="h-24 md:h-36 lg:h-40 object-contain mb-6 md:mb-8 drop-shadow-sm"
@@ -2527,7 +2472,7 @@ const BulletinView = () => {
 
             {/* Document Content Core */}
             <div className="w-full h-full overflow-hidden bg-slate-100 pt-16">
-              <img
+              <img loading="lazy"
                 src={previewBulletin.cover}
                 alt="Document Pages"
                 className="w-full h-full object-cover"
@@ -2971,7 +2916,7 @@ const ClubDocumentsView = () => {
             </div>
 
             <div className="w-full h-full overflow-hidden bg-slate-100 pt-16">
-              <img
+              <img loading="lazy"
                 src={previewDoc.url}
                 alt={`${previewDoc.title} Preview`}
                 className="w-full h-full object-cover"
