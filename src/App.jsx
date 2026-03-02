@@ -1044,16 +1044,16 @@ const HomeView = ({ setCurrentPage }) => {
 // Explicitly structured data for the Club's historical identities.
 // ----------------------------------------------------------------------------
 const pastLogosData = [
-  { id: "legacy-1", year: "2016-17", theme: "Logo", image: "src/assets/logo/4.jpg" },
-  { id: "legacy-2", year: "2017-18", theme: "Logo", image: "src/assets/logo/2.jpg" },
-  { id: "legacy-3", year: "2018-19", theme: "Logo", image: "src/assets/logo/1.jpg" },
-  { id: "legacy-4", year: "2019-20", theme: "Logo", image: "src/assets/logo/6.jpg" },
-  { id: "legacy-5", year: "2020-21", theme: "Logo", image: "src/assets/logo/3.jpg" },
-  { id: "legacy-6", year: "2021-22", theme: "Logo", image: "src/assets/logo/5.jpg" },
-  { id: "legacy-7", year: "2022-23", theme: "Logo", image: "src/assets/logo/10.jpg" },
-  { id: "legacy-8", year: "2023-24", theme: "Logo", image: "src/assets/logo/9.jpg" },
-  { id: "legacy-9", year: "2024-25", theme: "Logo", image: "src/assets/logo/8.jpg" },
-  { id: "legacy-10", year: "2025-26", theme: "Logo", image: "src/assets/logo/7.jpg" }
+  { id: "legacy-1", year: "2016-17", theme: "Logo", image: "/assets/logo/4.jpg" },
+  { id: "legacy-2", year: "2017-18", theme: "Logo", image: "/assets/logo/2.jpg" },
+  { id: "legacy-3", year: "2018-19", theme: "Logo", image: "/assets/logo/1.jpg" },
+  { id: "legacy-4", year: "2019-20", theme: "Logo", image: "/assets/logo/6.jpg" },
+  { id: "legacy-5", year: "2020-21", theme: "Logo", image: "/assets/logo/3.jpg" },
+  { id: "legacy-6", year: "2021-22", theme: "Logo", image: "/assets/logo/5.jpg" },
+  { id: "legacy-7", year: "2022-23", theme: "Logo", image: "/assets/logo/10.jpg" },
+  { id: "legacy-8", year: "2023-24", theme: "Logo", image: "/assets/logo/9.jpg" },
+  { id: "legacy-9", year: "2024-25", theme: "Logo", image: "/assets/logo/8.jpg" },
+  { id: "legacy-10", year: "2025-26", theme: "Logo", image: "/assets/logo/7.jpg" }
 ];
 
 const AboutView = () => (
@@ -1078,7 +1078,7 @@ const AboutView = () => (
           <div className="relative h-[450px] md:h-[550px] w-full hidden sm:block">
             <div className="absolute top-0 right-0 w-3/4 h-[85%] bg-white rounded-3xl border-[8px] border-white shadow-[0_20px_50px_rgba(1,47,100,0.06)] flex flex-col items-center justify-center overflow-hidden group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(225,29,72,0.1)] z-10 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-white to-slate-100 opacity-90"></div>
-              <div className="absolute inset-4 border-2 border-[#012f64]/20 rounded-2xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.97] transition-all duration-500"><img loading="lazy" src="src/assets/Home page and Assts/2.png" alt="Rotaract club activities and impacts graphic" /></div>
+              <div className="absolute inset-4 border-2 border-[#012f64]/20 rounded-2xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.97] transition-all duration-500"><img loading="lazy" src="/assets/Home page and Assts/2.png" alt="Rotaract club activities and impacts graphic" /></div>
               <div className="">
 
               </div>
@@ -1088,7 +1088,7 @@ const AboutView = () => (
             </div>
             <div className="absolute bottom-0 left-4 w-[55%] h-[55%] bg-[#012f64] rounded-3xl border-[8px] border-white shadow-[0_20px_50px_rgba(1,47,100,0.1)] flex flex-col items-center justify-center overflow-hidden group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(206,29,83,0.15)] z-20 hover:scale-105">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#012f64] via-[#012f64] to-[#02438c] opacity-90"></div>
-              <div className="absolute inset-3 border-2 border-white/20 rounded-xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.95] transition-all duration-500"><img loading="lazy" src="src/assets/Home page and Assts/1.png" alt="Members of Rotaract collaborating" /></div>
+              <div className="absolute inset-3 border-2 border-white/20 rounded-xl border-dashed group-hover:border-[#ce1d53] group-hover:scale-[0.95] transition-all duration-500"><img loading="lazy" src="/assets/Home page and Assts/1.png" alt="Members of Rotaract collaborating" /></div>
               <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md border border-white/20 mb-3 relative z-10 group-hover:-translate-y-2 transition-transform duration-500 shadow-sm">
               </div>
               <span className="text-white font-bold uppercase tracking-widest text-[9px] relative z-10 group-hover:text-[#ce1d53] transition-colors duration-500 text-center px-4 py-1.5 bg-black/20 rounded-full border border-white/10 shadow-sm">
@@ -1142,7 +1142,7 @@ const AboutView = () => (
             <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.08)] group bg-white border-[6px] border-white transition-all hover:shadow-[0_25px_60px_rgba(206,29,83,0.1)]">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-white"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <img loading="lazy" src="src\assets\Home page and Assts\home.jpg" alt="President" className="w-full h-full object-cover" />
+                <img loading="lazy" src="/assets/Home page and Assts/home.jpg" alt="President" className="w-full h-full object-cover" />
               </div>
               <div className="absolute top-8 left-8 text-[#ce1d53] transform -rotate-12 opacity-80">
                 <Flame className="w-8 h-8" />
